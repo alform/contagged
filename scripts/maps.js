@@ -11,7 +11,8 @@ function gmap_loader(){
     var geocoder = new GClientGeocoder();
     map.addControl(new GLargeMapControl());
     map.addControl(new GMapTypeControl());
-    map.setCenter(new GLatLng(52.514863,13.381863),10);
+    // map.setCenter(new GLatLng(52.514863,13.381863),10);
+    map.setCenter(new GLatLng(44.631251,10.899918),10); //nouvelle
     for (var i=0; i<gmap_data.length; i++){
         var t = 1;
         if(i>10) t = 1000;
@@ -35,6 +36,8 @@ function gmap_add(map,gc,adr,info,t){
                     }
                     var marker = new GMarker(point);
                     map.addOverlay(marker);
+		    map.setCenter(marker);
+		    map.setZoom(15);
                     GEvent.addListener(marker, "click", function(){
                         this.openInfoWindowHtml( info );
                     });
