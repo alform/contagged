@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>ConTagged - {$lang.ldapab}</title>
+    <title>{$lang.ldapab}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <!--
@@ -49,8 +49,7 @@
 
     <div id="titlerow">
         <div class="logo">
-            <a href="{$home}">ConTagged</a>
-            <span>- {$lang.ldapab}</span>
+            <a href="{$home}">{$lang.ldapab}</a>
         </div>
 
         <div class="search">
