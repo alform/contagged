@@ -140,7 +140,12 @@ a.tag {
     padding: 1px 0px 1px 18px;
     white-space: nowrap;
 }
-
+/* ALF*/
+a.manager {
+    background: transparent url(../pix/vcard.png) 0px 1px no-repeat;
+    padding: 1px 0px 1px 18px;
+    white-space: nowrap;
+}
 
 /* TagCloud */
 div#tagcloud {text-align: justify}

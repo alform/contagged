@@ -16,6 +16,24 @@
     <td>
         <a href="mailto:{$entry.mail[0]|h}">{$entry.mail[0]|h}</a>&nbsp;
     </td>
+    <td>
+{if $entry.manager}
+	{assign var=managerdn value=$entry.manager}
+	<!-- ALF: insert key account -->
+	<a href="index.php?manager={$entry.manager|escape:url}" class="manager">{$managers.$managerdn|h}</a> 
+{/if}
+  </td>
+{if $entry.marker }
+{* if $fields._marker *}
+            <td>
+              <span id="taglist">
+                {foreach from=$entry.marker item=marker}
+                  <a href="index.php?marker={$marker|escape:url}" class="tag">{$marker|h}</a>
+                {/foreach}
+                &nbsp;
+              </span>
+            </td>
+{/if}
     <td width="16">
         {if $entry.photo}
             <a href="img.php?dn={$entry.dn|escape:url}&amp;.jpg" rel="imagebox" target="_blank"

@@ -1,6 +1,9 @@
 <?php
 
   require_once('inc/init.php');
+
+//ALF$smarty->debugging="TRUE";
+
   ldap_login();
 
   // select entry template
@@ -11,6 +14,12 @@
   }else{
     $entrytpl = 'list_entry.tpl';
   }
+
+  //ALF: setup key account display & search.
+  //This needs to be set early or the array shows up empty (probably because of ->fetch)
+  $managers = get_users();
+  $smarty->assign('managers',$managers);
+  //ALF - end
 
   tpl_std();
 
@@ -42,11 +51,15 @@
   if (empty($_REQUEST['filter'])) $_REQUEST['filter']='';
   if (empty($_REQUEST['marker'])) $_REQUEST['marker']='';
   if (empty($_REQUEST['search'])) $_REQUEST['search']='';
+//ALF
+  if (empty($_REQUEST['manager'])) $_REQUEST['manager']='';
   $smarty->assign('list',$list);
   $smarty->assign('filter',$_REQUEST['filter']);
   $smarty->assign('marker',$_REQUEST['marker']);
   $smarty->assign('search',$_REQUEST['search']);
   $smarty->assign('org',$_REQUEST['org']);
+//ALF
+  $smarty->assign('manager',$_REQUEST['org']);
   //display templates
   if(!empty($_REQUEST['export'])){
     if ($conf['userlogreq'] && $user == ''){
@@ -96,18 +109,25 @@
   function _makeldapfilter(){
     global $FIELDS;
     global $conf;
-
+    //ALF
+    global $manager_by_name;
+    global $managers;
     //handle given filter
 
     if (empty($_REQUEST['filter'])) { $_REQUEST['filter']=''; }
     if (empty($_REQUEST['search'])) { $_REQUEST['search']=''; }
     if (empty($_REQUEST['org'])) { $_REQUEST['org']=''; }
     if (empty($_REQUEST['marker'])) { $_REQUEST['marker']=''; }
+    //ALF
+    if (empty($_REQUEST['manager'])) { $_REQUEST['manager']=''; }
     if(is_numeric($_REQUEST['search'])) $number = $_REQUEST['search'];
     $filter = ldap_filterescape($_REQUEST['filter']);
     $search = ldap_filterescape($_REQUEST['search']);
     $org    = ldap_filterescape($_REQUEST['org']);
     $marker = ldap_filterescape($_REQUEST['marker']);
+    //ALF
+    $manager = ldap_filterescape($_REQUEST['manager']);
+    error_log("ALF: dn " . $manager);
     $_SESSION['ldapab']['filter'] = $_REQUEST['filter'];
     if(empty($filter)) $filter='a';
 
@@ -120,6 +140,9 @@
         $ldapfilter .= '('.$FIELDS['_marker'].'='.$m.')';
       }
       $ldapfilter .= ')';
+    } elseif(!empty($manager)) { //ALF
+      //search by manager
+      $ldapfilter= '(' . $FIELDS['manager'].'='.$manager .')';
     }elseif($number){
       // Search by telephone number
       $filter = '';
@@ -172,6 +195,7 @@
       // Search by last name start
       $ldapfilter = '(&(objectClass=inetOrgPerson)('.$FIELDS['name']."=$filter*))";
     }
+    error_log("ALF: returning" . $ldapfilter);
     return $ldapfilter;
   }
 ?>
