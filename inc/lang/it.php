@@ -5,7 +5,7 @@
  * @author Simone Piccardi <piccardi@truelite.it>
  */ 
 
-$lang['ldapab']           = 'The LDAP address book';
+$lang['ldapab']           = 'Rubrica';
 
 $lang['name']             = 'Cognome';
 $lang['givenname']        = 'Nome';
